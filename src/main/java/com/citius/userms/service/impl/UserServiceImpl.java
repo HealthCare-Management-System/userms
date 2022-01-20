@@ -159,22 +159,36 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> fetchAllByRolesAndStatus(String role, String status) {
+	public List<UserDto> fetchAllByRolesAndStatus(String role, String status) {
 		List<User> users = repo.findAllByRolesName(role);
-		List userList = users.stream().filter(p -> p.getStatus().equalsIgnoreCase(status)).collect(Collectors.toList());
-		return userList;
+		List<User> userList = users.stream().filter(p -> p.getStatus().equalsIgnoreCase(status))
+				.collect(Collectors.toList());
+		List<UserDto> dtos = new ArrayList<>();
+		for (User us : userList) {
+			dtos.add(convertEntityToDto(us));
+		}
+
+		return dtos;
+
 	}
 
 	@Override
-	public List<User> fetchCorporateUsersByStatus(String status) {
+	public List<UserDto> fetchCorporateUsersByStatus(String status) {
 		List<User> nurseUsers = repo.findAllByRolesName("CT_NURSE");
 		List userList1 = nurseUsers.stream().filter(p -> p.getStatus().equalsIgnoreCase(status))
 				.collect(Collectors.toList());
 		List<User> physicianUsers = repo.findAllByRolesName("CT_PHYSICIAN");
-		List userList2 = physicianUsers.stream().filter(p -> p.getStatus().equalsIgnoreCase(status))
+		List<User> userList2 = physicianUsers.stream().filter(p -> p.getStatus().equalsIgnoreCase(status))
 				.collect(Collectors.toList());
 		userList2.addAll(userList1);
-		return userList2;
+
+		List<UserDto> dtos = new ArrayList<>();
+		for (User us : userList2) {
+			dtos.add(convertEntityToDto(us));
+		}
+
+		return dtos;
+
 	}
 
 }

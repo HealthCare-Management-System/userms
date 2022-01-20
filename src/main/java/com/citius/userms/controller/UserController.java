@@ -63,7 +63,7 @@ public class UserController {
 	@ApiOperation(value = "Search All Users By Role and status", notes = "default method for searching Users")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Fetched All Users By Users", response = User.class) })
 	@GetMapping("/{role}/{status}")
-	public List<User> allUserByRolesAnStatus(@PathVariable String role, @PathVariable String status) {
+	public List<UserDto> allUserByRolesAnStatus(@PathVariable String role, @PathVariable String status) {
 		System.out.println("Inside Users By Role *******");
 		return userService.fetchAllByRolesAndStatus(role, status);
 	}
@@ -73,7 +73,7 @@ public class UserController {
 	@ApiOperation(value = "Search All Corporate Users By status", notes = " method for searching Users")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Fetched All Users By Users", response = User.class) })
 	@GetMapping("/corporate-user-list/{status}")
-	public List<User> corporateUsersByStatus(@PathVariable String status) {
+	public List<UserDto> corporateUsersByStatus(@PathVariable String status) {
 		System.out.println("Inside Users By Role *******");
 		return userService.fetchCorporateUsersByStatus(status);
 	}
