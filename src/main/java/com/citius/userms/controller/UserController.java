@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiResponses;
 public class UserController {
 	private UserService userService;
 
+	
 	@Autowired
 	public UserController(UserService employeeService) {
 		super();
@@ -84,14 +85,17 @@ public class UserController {
 	
 	
 
+	
+//	@ApiOperation(value = "Search Users By Email", notes = "default method for searching User")
+//	@ApiResponses({ @ApiResponse(code = 200, message = "Fetched All Users", response = User.class) })
 	@CrossOrigin
-	@ApiOperation(value = "Search Users By Name", notes = "default method for searching User")
-	@ApiResponses({ @ApiResponse(code = 200, message = "Fetched All Users", response = User.class) })
 	@GetMapping("/{userName}")
-	public UserDto getEmployeeByName(@PathVariable String userName) {
+	public UserDto getUserByEmail(@PathVariable String userName) {
+		System.out.println("Inside USER MS FOR EMAIL");
 		return userService.getUserByName(userName);
 	}
 
+	@CrossOrigin
 	@PatchMapping("/{id}/{status}")
 	public UserDto updateStatusOfUser(@PathVariable int id, @PathVariable String status) {
 		return userService.update(id, status);
@@ -102,6 +106,7 @@ public class UserController {
 //		return userService.create(e);
 //	}
 
+	@CrossOrigin
 	@GetMapping("/users/{userId}")
 	public UserDto getById(@PathVariable("userId") int userId) {
 
@@ -119,12 +124,14 @@ public class UserController {
 //		return new ResponseEntity<>(userService.create(user), HttpStatus.OK);
 //	}
 //
+	@CrossOrigin
 	@PostMapping("/signup")
 	public ResponseEntity<UserDto> createUser( @RequestBody UserDto user)  {
 		UserDto newUser = userService.create(user);
 		return new ResponseEntity<>(newUser, HttpStatus.OK);
 	}
 	
+	@CrossOrigin
 	@GetMapping("/ping")
 	public ResponseEntity<String>  greeting() {
 		return new ResponseEntity<>("Application Up!!!", HttpStatus.OK);
