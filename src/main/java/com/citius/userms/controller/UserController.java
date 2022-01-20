@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiResponses;
 public class UserController {
 	private UserService userService;
 
+	
 	@Autowired
 	public UserController(UserService employeeService) {
 		super();
@@ -56,15 +57,45 @@ public class UserController {
 		}
 		return names;
 	}
-
+	
+	
 	@CrossOrigin
-	@ApiOperation(value = "Search Users By Name", notes = "default method for searching User")
-	@ApiResponses({ @ApiResponse(code = 200, message = "Fetched All Users", response = User.class) })
+	@ApiOperation(value = "Search All Users By Role and status", notes = "default method for searching Users")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Fetched All Users By Users", response = User.class) })
+	@GetMapping("/{role}/{status}")
+	public List<UserDto> allUserByRolesAnStatus(@PathVariable String role, @PathVariable String status) {
+		System.out.println("Inside Users By Role *******");
+		return userService.fetchAllByRolesAndStatus(role, status);
+	}
+	
+	
+	@CrossOrigin
+	@ApiOperation(value = "Search All Corporate Users By status", notes = " method for searching Users")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Fetched All Users By Users", response = User.class) })
+	@GetMapping("/corporate-user-list/{status}")
+	public List<UserDto> corporateUsersByStatus(@PathVariable String status) {
+		System.out.println("Inside Users By Role *******");
+		return userService.fetchCorporateUsersByStatus(status);
+	}
+	
+	
+	
+	
+	
+	
+	
+
+	
+//	@ApiOperation(value = "Search Users By Email", notes = "default method for searching User")
+//	@ApiResponses({ @ApiResponse(code = 200, message = "Fetched All Users", response = User.class) })
+	@CrossOrigin
 	@GetMapping("/{userName}")
-	public UserDto getEmployeeByName(@PathVariable String userName) {
+	public UserDto getUserByEmail(@PathVariable String userName) {
+		System.out.println("Inside USER MS FOR EMAIL");
 		return userService.getUserByName(userName);
 	}
 
+	@CrossOrigin
 	@PatchMapping("/{id}/{status}")
 	public UserDto updateStatusOfUser(@PathVariable int id, @PathVariable String status) {
 		return userService.update(id, status);
@@ -75,6 +106,7 @@ public class UserController {
 //		return userService.create(e);
 //	}
 
+	@CrossOrigin
 	@GetMapping("/users/{userId}")
 	public UserDto getById(@PathVariable("userId") int userId) {
 
@@ -92,12 +124,14 @@ public class UserController {
 //		return new ResponseEntity<>(userService.create(user), HttpStatus.OK);
 //	}
 //
+	@CrossOrigin
 	@PostMapping("/signup")
 	public ResponseEntity<UserDto> createUser( @RequestBody UserDto user)  {
 		UserDto newUser = userService.create(user);
 		return new ResponseEntity<>(newUser, HttpStatus.OK);
 	}
 	
+	@CrossOrigin
 	@GetMapping("/ping")
 	public ResponseEntity<String>  greeting() {
 		return new ResponseEntity<>("Application Up!!!", HttpStatus.OK);
