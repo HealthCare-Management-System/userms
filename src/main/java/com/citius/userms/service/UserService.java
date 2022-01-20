@@ -31,4 +31,8 @@ public interface UserService {
 
 	public User convertDtoToEntity(UserDto us);
 
+	public List<User> fetchAllByRolesAndStatus(String role, String status);
+
+	public List<User> fetchCorporateUsersByStatus(String status);
+
 }

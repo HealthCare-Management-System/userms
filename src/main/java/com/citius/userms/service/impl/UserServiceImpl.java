@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -134,10 +135,9 @@ public class UserServiceImpl implements UserService {
 		user.setEmpid(us.getEmpid());
 		user.setLname(us.getLname());
 		user.setStatus(us.getStatus());
-		user.setTitle(us.getTitle());		
+		user.setTitle(us.getTitle());
 		user.setDoj(us.getDoj());
-		if(null == us.getDoj())
-		{
+		if (null == us.getDoj()) {
 			user.setDoj(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).toString());
 		}
 		Role roleobj = roleService.findByName(us.getRole().toUpperCase());
@@ -156,6 +156,25 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return dtos;
+	}
+
+	@Override
+	public List<User> fetchAllByRolesAndStatus(String role, String status) {
+		List<User> users = repo.findAllByRolesName(role);
+		List userList = users.stream().filter(p -> p.getStatus().equalsIgnoreCase(status)).collect(Collectors.toList());
+		return userList;
+	}
+
+	@Override
+	public List<User> fetchCorporateUsersByStatus(String status) {
+		List<User> nurseUsers = repo.findAllByRolesName("CT_NURSE");
+		List userList1 = nurseUsers.stream().filter(p -> p.getStatus().equalsIgnoreCase(status))
+				.collect(Collectors.toList());
+		List<User> physicianUsers = repo.findAllByRolesName("CT_PHYSICIAN");
+		List userList2 = physicianUsers.stream().filter(p -> p.getStatus().equalsIgnoreCase(status))
+				.collect(Collectors.toList());
+		userList2.addAll(userList1);
+		return userList2;
 	}
 
 }

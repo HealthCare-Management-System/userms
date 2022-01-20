@@ -56,6 +56,33 @@ public class UserController {
 		}
 		return names;
 	}
+	
+	
+	@CrossOrigin
+	@ApiOperation(value = "Search All Users By Role and status", notes = "default method for searching Users")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Fetched All Users By Users", response = User.class) })
+	@GetMapping("/{role}/{status}")
+	public List<User> allUserByRolesAnStatus(@PathVariable String role, @PathVariable String status) {
+		System.out.println("Inside Users By Role *******");
+		return userService.fetchAllByRolesAndStatus(role, status);
+	}
+	
+	
+	@CrossOrigin
+	@ApiOperation(value = "Search All Corporate Users By status", notes = " method for searching Users")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Fetched All Users By Users", response = User.class) })
+	@GetMapping("/corporate-user-list/{status}")
+	public List<User> corporateUsersByStatus(@PathVariable String status) {
+		System.out.println("Inside Users By Role *******");
+		return userService.fetchCorporateUsersByStatus(status);
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	@CrossOrigin
 	@ApiOperation(value = "Search Users By Name", notes = "default method for searching User")
